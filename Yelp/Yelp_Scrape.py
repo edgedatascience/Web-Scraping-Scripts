@@ -2,8 +2,6 @@
 
 ######################################################
 #
-# Created by Mike Donnalley - 07/30/2015
-#
 # This is a webs-scraping script that utilizes
 # Beautiful Soup to scrape data from Yelp and place
 # it neatly into a CSV file.
