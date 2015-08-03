@@ -186,7 +186,6 @@ def data_scrape(master_list_of_links):
                 indiv_list.append(stars.content)
                 indiv_list.append(k.p.text.encode("utf-8"))
                 big_list.append(indiv_list)
-                del indiv_list[:]
             time.sleep(time_between_review_pages)
         print "Scrape complete!"
         time.sleep(time_between_big_links)
