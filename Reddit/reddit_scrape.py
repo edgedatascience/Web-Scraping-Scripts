@@ -78,7 +78,7 @@ def get_pages(first_page, number_of_pages):
                 list_of_page_links.append(next_link['href'])
                 print next_link['href']
                 counter += 1
-            except (RuntimeError, TypeError, NameError, ValueError):
+            except urllib2.HTTPError:
                 continue
             break
     print ""
@@ -110,10 +110,12 @@ def scrape_threads(list_of_page_links, source_name, output_file_path, threads_ou
         link = prefix + thread
         opener = urllib2.build_opener()
         opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-        try:
-            r = opener.open(link)
-        except(RuntimeError, TypeError, NameError, ValueError):
-            continue
+        while True:
+            try:
+                r = opener.open(link)
+            except urllib2.HTTPError:
+                continue
+            break
         soup = BeautifulSoup(r)
         thread_title = soup.find('a', class_='title may-blank ').text.encode('ascii', errors='ignore')
         print thread_title
@@ -132,7 +134,7 @@ def scrape_threads(list_of_page_links, source_name, output_file_path, threads_ou
                     indiv_list.append(post_date)
                     post_time = date_time[-16:-9]
                     indiv_list.append(post_time)
-                except (RuntimeError, TypeError, NameError, ValueError):
+                except TypeError:
                     indiv_list.append('')
                     indiv_list.append('')
             post_container = reply.find('div', class_='md')
@@ -220,12 +222,12 @@ home_page = get_homepage(source, 'most recent')
 # number of pages must be <= 39
 page_links = get_pages(home_page, 39)
 
-output_path = 'C:\Users\donnalley\Google Drive\Mike_Matt\Wilson\Reddit'
-upvotes_output_file = 'Reddit_SmallBiz_Upvotes_MostRecent_0724.csv'
-threads_output_file = 'Reddit_SmallBiz_Posts_MostRecent_0724.csv'
+output_path = 'C:\Users\donnalley\Desktop'
+upvotes_output_file = 'Reddit_SmallBiz_Upvotes_MostRecent_0806.csv'
+threads_output_file = 'Reddit_SmallBiz_Posts_MostRecent_00806.csv'
 
 # threads, upvotes, or both
-scrape_object = 'both'
+scrape_object = 'threads'
 scrape_select(source, page_links, scrape_object, output_path, upvotes_output_file, threads_output_file)
 
 print ""
